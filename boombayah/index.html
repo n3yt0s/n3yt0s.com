@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Menú</title>
+<style>
+  :root {
+    --bg: #f4f4f6;
+    --box-bg: #ffffff;
+    --box-border: #d4d4da;
+    --box-hover: #8a8a96;
+    --text: #1f1f24;
+    --muted: #6b6b76;
+    --accent: #1f1f24;
+    --accent-text: #ffffff;
+    --photo-bg: #e6e6ea;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    color-scheme: light dark;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #17171a;
+      --box-bg: #222226;
+      --box-border: #3a3a42;
+      --box-hover: #8a8a96;
+      --text: #f0f0f3;
+      --muted: #a0a0ab;
+      --accent: #f0f0f3;
+      --accent-text: #17171a;
+      --photo-bg: #33333a;
+    }
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; min-height: 100%; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  .wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    padding: 24px 20px;
+    max-width: 100%;
+  }
+
+  /* Selector de vista */
+  .switch {
+    display: inline-flex;
+    background: var(--box-bg);
+    border: 2px solid var(--box-border);
+    border-radius: 999px;
+    padding: 4px;
+    gap: 4px;
+  }
+  .switch button {
+    font: inherit;
+    font-size: 14px;
+    color: var(--muted);
+    background: transparent;
+    border: 0;
+    border-radius: 999px;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: background .15s ease, color .15s ease;
+  }
+  .switch button[aria-pressed="true"] {
+    background: var(--accent);
+    color: var(--accent-text);
+  }
+  body.forced .switch { display: none; }
+
+  /* Tarjeta (enlace) – vista de recuadros: foto arriba, texto abajo */
+  .menu {
+    display: grid;
+    grid-template-columns: repeat(3, 180px);
+    gap: 20px;
+    justify-content: center;
+  }
+  .box {
+    display: flex;
+    flex-direction: column;
+    width: 180px;
+    background: var(--box-bg);
+    border: 2px solid var(--box-border);
+    border-radius: 16px;
+    overflow: hidden;
+    color: inherit;
+    text-decoration: none;
+    transition: transform .15s ease, border-color .15s ease;
+  }
+  .box:hover, .box:focus-visible {
+    transform: translateY(-4px);
+    border-color: var(--box-hover);
+    outline: none;
+  }
+  .box img {
+    display: block;
+    width: 100%;
+    height: 130px;
+    object-fit: cover;
+    background: var(--photo-bg);
+  }
+  .box .text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 12px 14px 14px;
+  }
+  .box .title { font-weight: 600; font-size: 15px; }
+  .box .desc  { font-size: 13px; color: var(--muted); line-height: 1.35; }
+
+  /* Vista lista: foto pequeña a la izquierda, texto a la derecha */
+  .menu.list {
+    grid-template-columns: minmax(0, 480px);
+    width: min(480px, 100%);
+    gap: 12px;
+  }
+  .menu.list .box {
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    gap: 14px;
+    padding: 10px;
+    border-radius: 14px;
+  }
+  .menu.list .box:hover, .menu.list .box:focus-visible { transform: translateX(4px); }
+  .menu.list .box img {
+    width: 64px;
+    height: 64px;
+    flex: none;
+    border-radius: 10px;
+  }
+  .menu.list .text { padding: 0; }
+  .menu.list .title { font-size: 16px; }
+  .menu.list .desc  { font-size: 14px; }
+
+  @media (max-width: 600px) {
+    .menu.list { grid-template-columns: minmax(0, 1fr); }
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="switch" role="group" aria-label="Tipo de vista">
+      <button type="button" id="btn-grid" aria-pressed="true">boing boing</button>
+      <button type="button" id="btn-list" aria-pressed="false">Lista</button>
+    </div>
+
+    <nav class="menu" id="menu"></nav>
+  </div>
+
+<script>
+  /* 
+  */
+  const items = [
+    { title: "Viernes 13 Nov", desc: "67 funny",  url: "https://img.n3yt0s.com/s/j43k5gh5g3hj-13-11-26", img: "photo1.png" },
+    { title: "Videos Viernes 13 Nov", desc: "videos 67 funny", url: "https://img.n3yt0s.com/s/j43k5gh5g3hj-vid13-11-26", img: "" },
+    { title: "Hallowen 26", desc: "feliz hawolin mi gente",  url: "https://img.n3yt0s.com/s/j43k5gh5g3hj-30-10-16", img: "" },
+    { title: "Videos Hallowen 26", desc: "videos del hawolin mi gente",  url: "https://img.n3yt0s.com/s/j43k5gh5g3hj-vids30-10-26", img: "" },
+    { title: "Videos Viernes 30 Oct", desc: "videos del friday ma pepol",   url: "https://img.n3yt0s.com/s/j43k5gh5g3hj-11-10-26", img: "" },
+    { title: "Domingo 11 Oct", desc: "Sunday",  url: "https://img.n3yt0s.com/s/j43k5gh5g3hj-67-11-10-26", img: "" },
+    { title: "Sábado 10 Oct", desc: "xd",  url: "https://img.n3yt0s.com/s/j43k5gh5g3hj-10-10-26", img: "" },
+    { title: "Viernes 09 Oct", desc: "yes vas",  url: "https://img.n3yt0s.com/s/j43k5gh5g3hj-9-10-26", img: "" }
+  ];
+
+  // Imagen de relleno (no necesita ningún archivo)
+  const placeholder = "data:image/svg+xml;utf8," + encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">' +
+    '<rect width="100" height="100" fill="#9a9aa6" fill-opacity=".35"/>' +
+    '<circle cx="35" cy="38" r="8" fill="#9a9aa6"/>' +
+    '<path d="M10 80 L38 52 L55 68 L70 54 L90 80 Z" fill="#9a9aa6"/></svg>'
+  );
+
+  const menu = document.getElementById("menu");
+  const btnGrid = document.getElementById("btn-grid");
+  const btnList = document.getElementById("btn-list");
+
+  function esc(s) {
+    return String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  }
+
+  menu.innerHTML = items.map(i => `
+    <a class="box" href="${esc(i.url || "#")}">
+      <img src="${esc(i.img || placeholder)}" alt="${esc(i.title)}" loading="lazy">
+      <span class="text">
+        <span class="title">${esc(i.title)}</span>
+        <span class="desc">${esc(i.desc)}</span>
+      </span>
+    </a>`).join("");
+
+  // Si una foto no carga, usar la de relleno
+  menu.querySelectorAll("img").forEach(img => {
+    img.addEventListener("error", () => { img.src = placeholder; }, { once: true });
+  });
+
+  // Pantallas estrechas (móvil) o alargadas en vertical → siempre lista
+  const forceList = window.matchMedia("(max-width: 600px), (orientation: portrait)");
+  let userList = false;
+
+  function render() {
+    const forced = forceList.matches;
+    const list = forced || userList;
+    document.body.classList.toggle("forced", forced);
+    menu.classList.toggle("list", list);
+    btnGrid.setAttribute("aria-pressed", String(!list));
+    btnList.setAttribute("aria-pressed", String(list));
+  }
+
+  btnGrid.addEventListener("click", () => { userList = false; render(); });
+  btnList.addEventListener("click", () => { userList = true; render(); });
+  forceList.addEventListener("change", render);
+  render();
+</script>
+</body>
+</html>

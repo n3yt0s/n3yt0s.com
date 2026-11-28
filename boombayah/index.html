@@ -38,11 +38,23 @@
     background: var(--bg);
     color: var(--text);
     display: flex;
-    align-items: center;
-    justify-content: center;
+    flex-direction: column;
     min-height: 100vh;
     font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
   }
+  .page {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .site-footer {
+    text-align: center;
+    padding: 20px;
+    font-size: 13px;
+  }
+  .site-footer a { color: var(--muted); }
+  .site-footer a:hover { color: var(--text); }
   .wrap {
     display: flex;
     flex-direction: column;
@@ -176,7 +188,7 @@
  
   /* En móvil / pantallas alargadas: el aviso pasa arriba */
   @media (max-width: 600px), (orientation: portrait) {
-    body {
+    .page {
       flex-direction: column;
       justify-content: flex-start;
     }
@@ -188,6 +200,7 @@
 </style>
 </head>
 <body>
+  <main class="page">
   <div class="wrap bubble">
     <h1>HEY! ALGO MUY IMPORTANTE!!!!11!</h1>  <br>
     <p>No permito que se hagan memes, o chistes a partid de estas fotos, a menos que TODAS las personas que aparezcan lo permitan.</p>
@@ -200,6 +213,12 @@
  
     <nav class="menu" id="menu"></nav>
   </div>
+  </main>
+  <!--> In case someone gets some shit wrong
+  <footer class="site-footer">
+    <a href="copyright.html">Copyright</a>
+  </footer>
+  <!-->
  
 <script>
   
